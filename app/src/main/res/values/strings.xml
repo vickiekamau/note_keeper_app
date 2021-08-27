@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">My Note App</string>
+    <string name="to_do">To do</string>
+    <string name="enter_note">Enter a note</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="edit">edit</string>
+    <string name="delete">Delete</string>
+    <string name="date">Date</string>
+    <string name="add_note">Add note</string>
+    <string name="note">Note</string>
+    <string name="image">image</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="add_notes">Add Note</string>
+    <string name="edit_notes">Edit Note</string>
+    <string name="update_note">Update Note</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="email">Email</string>
+    <string name="confirm">Confirm</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dont_have_an_account_register">Dont have an account? Register</string>
+    <string name="get_started">Get Started</string>
+    <string name="create_account">Create Account</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="confimr_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_sign_in">Already have an account Sign In</string>
+</resources>
