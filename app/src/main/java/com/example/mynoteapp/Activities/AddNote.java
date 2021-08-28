@@ -47,6 +47,7 @@ public class AddNote extends AppCompatActivity {
     private String email;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +117,7 @@ public class AddNote extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
               if(task.isSuccessful()){
                   StorageReference ref = storageReference.child(imageId);
-                  ref.putFile(imageFilePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                  uploadTask = ref.putFile(imageFilePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                       @Override
                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                           Toast.makeText(AddNote.this,
@@ -139,8 +140,10 @@ public class AddNote extends AppCompatActivity {
                   sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                   sweetAlertDialog.setTitleText("Success");
                   sweetAlertDialog.setContentText("Note Saved Successfully!");
-                  sweetAlertDialog.setOnDismissListener(dialogInterface ->
-                          startActivity(new Intent(AddNote.this, MainActivity.class)));
+                  sweetAlertDialog.setOnDismissListener(null);
+                  Intent intent = new Intent(AddNote.this, MainActivity.class);
+                  intent.putExtra("email", email);
+                  startActivity( intent);
 
               }
               else{

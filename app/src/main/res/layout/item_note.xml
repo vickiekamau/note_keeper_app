@@ -9,7 +9,6 @@
     android:layout_marginBottom="4dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="1dp"
-    android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     android:id="@+id/card_item">
@@ -52,7 +51,8 @@
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:text="&#8942;"
-        android:textSize="20sp"
+        android:textSize="35sp"
         android:id="@+id/txt_option"
+        android:layout_marginTop="15dp"
         android:layout_gravity="right" />
 </androidx.cardview.widget.CardView>

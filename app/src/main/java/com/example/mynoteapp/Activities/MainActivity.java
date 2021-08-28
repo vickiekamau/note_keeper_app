@@ -66,11 +66,8 @@ public class MainActivity extends AppCompatActivity  {
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
 
-        String myUserEmail = email;
+
         Log.e("email",email);
-        //String myUserId = databaseReference.getKey();
-        //Query myTopPostsQuery = databaseReference.child(myUserId)
-               // .orderByChild("email").equalTo(myUserEmail);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

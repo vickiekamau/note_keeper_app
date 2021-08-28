@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynoteapp.Activities.NoteEditor;
@@ -30,12 +29,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     Context context;
     ArrayList<Note> list;
     private DatabaseReference databaseReference;
-   //ItemClickListener clickListener;
+
 
     public NotesAdapter(Context context,ArrayList<Note> list){
         this.context = context;
         this.list = list;
-        // this.clickListener = itemClickListener1;
+
     }
 
     @NonNull
@@ -52,9 +51,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         Log.d("title",note.getTitle());
         holder.note.setText(note.getNote());
         holder.txt_option.setOnClickListener((view -> {
-            /**Intent intent = new Intent(view.getContext(), NoteEditor.class);
-            intent.putExtra("notes",list.get(position));
-            view.getContext().startActivity(intent);*/
             PopupMenu popupMenu = new PopupMenu(context,holder.txt_option);
             popupMenu.inflate(R.menu.options_menu);
             popupMenu.setOnMenuItemClickListener(item ->{
@@ -101,14 +97,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView title,note,txt_option;
-        CardView mainLayout;
 
         public MyViewHolder(@NonNull  View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.title);
             note = itemView.findViewById(R.id.note);
-           // mainLayout = itemView.findViewById(R.id.card_item);
             txt_option = itemView.findViewById(R.id.txt_option);
 
         }
