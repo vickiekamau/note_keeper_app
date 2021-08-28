@@ -56,6 +56,38 @@
                 android:textColor="@android:color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/view_padding"
+            android:background="@drawable/body_bg"
+            android:elevation="1dp"
+            android:layout_marginTop="20dp"
+            android:padding="@dimen/layout_padding">
+
+            <TextView
+                android:id="@+id/idTitle"
+                style="@style/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/view_padding"
+                android:padding="@dimen/view_padding"
+                android:text="Uploaded Image" />
+
+            <ImageView
+                android:id="@+id/iDImageView"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="centerCrop"
+                android:layout_below="@id/idTitle"
+                android:layout_marginBottom="@dimen/view_padding"
+                android:adjustViewBounds="true"
+                android:background="@color/pressed_bg"
+                android:padding="@dimen/view_padding"
+                android:src="@drawable/file"
+                android:contentDescription="@string/image" />
+
+        </RelativeLayout>
 
 
         <Button

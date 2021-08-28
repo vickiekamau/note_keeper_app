@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity  {
             sweetAlertDialog.setConfirmText("Yes");
             sweetAlertDialog.setCancelText("No");
             sweetAlertDialog.setConfirmClickListener(sweetAlertDialog1 -> {
-                closeApp();
+                finishAffinity();
                 sweetAlertDialog1.dismissWithAnimation();
             });
 

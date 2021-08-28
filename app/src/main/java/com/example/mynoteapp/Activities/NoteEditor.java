@@ -2,11 +2,13 @@ package com.example.mynoteapp.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +20,18 @@ import com.example.mynoteapp.Support.InputValidator;
 import com.example.mynoteapp.databinding.ActivityNoteEditorBinding;
 import com.example.mynoteapp.model.Note;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -53,17 +61,47 @@ public class NoteEditor extends AppCompatActivity {
         validator = InputValidator.getInstance();
 
 
+
+        storageReference = FirebaseStorage.getInstance().getReference("images/");
         databaseReference = FirebaseDatabase.getInstance().getReference("Notes");
             Note note = (Note) getIntent().getSerializableExtra("Edit");
             if(note!=null) {
                 activityNoteEditorBinding.titleInput.setText(note.getTitle());
                 activityNoteEditorBinding.noteInput.setText(note.getNote());
+                storageReference = FirebaseStorage.getInstance().getReference().child(note.getImage());
+                try{
+                    sweetAlertDialog = new SweetAlertDialog(NoteEditor.this, SweetAlertDialog.PROGRESS_TYPE);
+                    sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#41c300"));
+                    sweetAlertDialog.setTitleText( "Loading...");
+                    sweetAlertDialog.show();
+                    final File localFile = File.createTempFile("image","jpg");
+                    storageReference.getFile(localFile)
+                            .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    sweetAlertDialog.cancel();
+                                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                    activityNoteEditorBinding.iDImageView.setImageBitmap(bitmap);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull  Exception e) {
+                            Toast.makeText(NoteEditor.this,
+                                    "Failed " + e.getMessage(),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
             else{
                 sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 sweetAlertDialog.setTitleText( "Oops");
-                sweetAlertDialog.setContentText("Empty Data");
+                sweetAlertDialog.setContentText("Data not Fetched Successfully");
                 sweetAlertDialog.setOnDismissListener(null);
             }
             
@@ -91,7 +129,7 @@ public class NoteEditor extends AppCompatActivity {
 
     }
 
-    private void validateInput(String id,String email, String image) {
+    private void validateInput(String id,String email,String image) {
         if(validator.validateRequired(activityNoteEditorBinding.titleLayout,activityNoteEditorBinding.titleInput) &&
                 validator.validateRequired(activityNoteEditorBinding.noteLayout,activityNoteEditorBinding.noteInput)){
 
@@ -104,20 +142,19 @@ public class NoteEditor extends AppCompatActivity {
 
 
     }
-    private void updateNote(String title, String note, String key,String email,String image) {
+    private void updateNote(String title, String note, String key,String email, String image) {
         sweetAlertDialog = new SweetAlertDialog(NoteEditor.this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#41c300"));
         sweetAlertDialog.setTitleText( "Loading...");
         sweetAlertDialog.show();
-        String userEmail = email;
 
         //Note notes = new Note(noteId, title, note, imageId, email);
         HashMap<String, Object> noteMap = new HashMap<>();
         noteMap.put("noteID",key);
         noteMap.put("title",title);
         noteMap.put("note",note);
-        noteMap.put("image",image);
-        noteMap.put("email",userEmail);
+        noteMap.put("image", image);
+        noteMap.put("email", email);
         databaseReference.child(key).updateChildren(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -135,12 +172,13 @@ public class NoteEditor extends AppCompatActivity {
                 else{
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     sweetAlertDialog.setTitleText( "Oops");
-                    sweetAlertDialog.setContentText("Property not Saved!, Please Retry");
+                    sweetAlertDialog.setContentText("Failed!, Please Retry");
                     sweetAlertDialog.setOnDismissListener(null);
                 }
             }
         });
-        
+
+
     }
 
 
